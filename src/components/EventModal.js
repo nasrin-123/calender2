@@ -1,14 +1,7 @@
 import React, { useContext, useState } from "react";
 import GlobalContext from "../context/GlobalContext";
 
-const labelsClasses = [
-  "indigo",
-  "gray",
-  "green",
-  "blue",
-  "red",
-  "purple",
-];
+const labelsClasses = ["indigo", "gray", "green", "blue", "red", "purple"];
 
 export default function EventModal() {
   const {
@@ -18,9 +11,7 @@ export default function EventModal() {
     selectedEvent,
   } = useContext(GlobalContext);
 
-  const [title, setTitle] = useState(
-    selectedEvent ? selectedEvent.title : ""
-  );
+  const [title, setTitle] = useState(selectedEvent ? selectedEvent.title : "");
   const [description, setDescription] = useState(
     selectedEvent ? selectedEvent.description : ""
   );
@@ -28,6 +19,12 @@ export default function EventModal() {
     selectedEvent
       ? labelsClasses.find((lbl) => lbl === selectedEvent.label)
       : labelsClasses[0]
+  );
+  const [startTime, setStartTime] = useState(
+    selectedEvent ? selectedEvent.startTime : "09:00"
+  );
+  const [endTime, setEndTime] = useState(
+    selectedEvent ? selectedEvent.endTime : "10:00"
   );
 
   function handleSubmit(e) {
@@ -37,6 +34,8 @@ export default function EventModal() {
       description,
       label: selectedLabel,
       day: daySelected.valueOf(),
+      startTime,
+      endTime,
       id: selectedEvent ? selectedEvent.id : Date.now(),
     };
     if (selectedEvent) {
@@ -47,6 +46,7 @@ export default function EventModal() {
 
     setShowEventModal(false);
   }
+
   return (
     <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center">
       <form className="bg-white rounded-lg shadow-2xl w-1/4">
@@ -92,6 +92,33 @@ export default function EventModal() {
               schedule
             </span>
             <p>{daySelected.format("dddd, MMMM DD")}</p>
+
+            {/* Start Time Input */}
+            <span className="material-icons-outlined text-gray-400">
+              access_time
+            </span>
+            <input
+              type="time"
+              name="startTime"
+              value={startTime}
+              required
+              className="pt-3 border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
+              onChange={(e) => setStartTime(e.target.value)}
+            />
+
+            {/* End Time Input */}
+            <span className="material-icons-outlined text-gray-400">
+              access_time
+            </span>
+            <input
+              type="time"
+              name="endTime"
+              value={endTime}
+              required
+              className="pt-3 border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
+              onChange={(e) => setEndTime(e.target.value)}
+            />
+
             <span className="material-icons-outlined text-gray-400">
               segment
             </span>
